@@ -14,3 +14,10 @@ tasks.register("hello", Greeting) {
     message = 'Hello' 
     recipient = 'World'
 }
+
+tasks.register("gutenTag", Greeting) {
+    group = 'Welcome'
+    description = 'Produces a German greeting'
+    message = 'Guten Tag'
+    recipient = 'Welt'
+}
