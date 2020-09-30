@@ -4,3 +4,6 @@ gradle tasks --all
 gradle hello
 # salida para 'tasks' task
 gradle tasks
+
+# ejecutar nuevamente la tarea
+gradle hello
