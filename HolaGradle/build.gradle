@@ -1,6 +1,6 @@
 class Greeting extends DefaultTask {  
-    String message 
-    String recipient
+    @Internal String message 
+    @Internal String recipient
 
     @TaskAction 
     void sayGreeting() {
