@@ -55,4 +55,33 @@ include("app") defines that the build consists of one subproject called app that
 
 # Build de la aplicación
 
+## Construir imagen docker
+
+    docker build -t alex/gradle-cpp:1.0 .
+
+
+    # inside of container
     ./gradlew build
+
+## Carpeta de salida de compilación
+
+    ./app/build/install
+    ├── main
+    │   └── debug
+    │       ├── app [1]
+    │       └── lib
+    │           └── app [2]
+    └── test
+        ├── appTest [1]
+        └── lib
+            └── appTest [3]
+
+1. The script for executing the application variant
+2. The main executable binary (debug variant)
+3. The test executable binary
+
+# Correr la aplicación
+
+    ./app/build/exe/main/debug/app
+    # output
+    # Hello, World!

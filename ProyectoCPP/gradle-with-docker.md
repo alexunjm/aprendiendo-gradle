@@ -21,9 +21,9 @@
 
 para levantar un contenedor de gradle y utilizar posteriormente desde terminal bash del contenedor
 
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle tail -f /dev/null
+    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d alex/gradle-cpp:1.0 tail -f /dev/null
     # o tambien
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle sleep infinity
+    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d alex/gradle-cpp:1.0 sleep infinity
 
 ### finalmente, se puede ingresar a la terminal de la siguiente forma
 
@@ -31,7 +31,7 @@ para levantar un contenedor de gradle y utilizar posteriormente desde terminal b
 
 ### ejemplo
 
-    CONTAINER_GRADLE=$(docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle sleep infinity)
+    CONTAINER_GRADLE=$(docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d alex/gradle-cpp:1.0 sleep infinity)
     docker exec -it "${CONTAINER_GRADLE}" bash
 
     # inside of container
