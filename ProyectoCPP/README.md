@@ -1,41 +1,58 @@
-# Usos con Docker
+# Estructura de archivos y carpetas
 
-## para probar rápidamente gradle desde un contenedor
+    ├── gradle [1]
+    │   └── wrapper
+    │       ├── gradle-wrapper.jar
+    │       └── gradle-wrapper.properties
+    ├── gradlew [2]
+    ├── gradlew.bat [2]
+    ├── settings.gradle [3]
+    └── app
+        ├── build.gradle [4]
+        └── src
+            ├── main
+            │   └── cpp [5]
+            │   │   └── app.cpp
+            │   └── headers
+            │       └── app.h
+            └── test
+                └── cpp [6]
+                    └── app_test.cpp
 
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project gradle gradle <gradle-task>
+1. Generated folder for wrapper files
+2. Gradle wrapper start scripts
+3. Settings file to define build name and subprojects
+4. Build script of app project
+5. Default C++ source folder
+6. Default C++ test source folder
 
-### flags
+# 3. settings.gradle
 
-    --rm                             Automatically remove the container when it exits
-    -u, --user string                Username or UID (format: <name|uid>[:<group|gid>])
-    -v, --volume list                Bind mount a volume
-    -w, --workdir string             Working directory inside the container
+    settings.gradle
+    rootProject.name = 'demo'
+    include('app')
 
-## ejemplos
+rootProject.name assigns a name to the build, which overrides the default behavior of naming the build after the directory it’s in. It’s recommended to set a fixed name as the folder might change if the project is shared - e.g. as root of a Git repository.
 
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project gradle gradle tasks --all
+include("app") defines that the build consists of one subproject called app that contains the actual code and build logic. More subprojects can be added by additional include(…​) statements.
 
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project gradle gradle hello
+# 4. app/build.gradle
 
-## Detach del container -d
+    plugins {
+        id 'cpp-application' [1]
 
-para levantar un contenedor de gradle y utilizar posteriormente desde terminal bash del contenedor
+        id 'cpp-unit-test' [2]
+    }
 
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle tail -f /dev/null
-    # o tambien
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle sleep infinity
+    application { [3]
+        targetMachines.add(machines.linux.x86_64)
+    }
 
-### finalmente, se puede ingresar a la terminal de la siguiente forma
+1. Apply the cpp-application plugin to add support for building C++ executables
+2. Apply the cpp-unit-test plugin to add support for building and running C++ test executables
 
-    docker exec -it <containerName> /bin/bash
+## 5. y 6. son un ejemplo de código probado
 
-### ejemplo
+# Build de la aplicación
 
-    CONTAINER_GRADLE=$(docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -d gradle sleep infinity)
-    docker exec -it "${CONTAINER_GRADLE}" bash
-
-    # inside of container
-    gradle <task>
-
-    # fuera del container, parar la ejecución del contenedor
-    docker stop "${CONTAINER_GRADLE}"
+    ./gradlew build
